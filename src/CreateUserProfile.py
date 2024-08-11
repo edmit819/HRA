@@ -1,7 +1,6 @@
 import random
 import pandas as pd
 
-from icecream import ic
 from faker import Faker
 from datetime import datetime
 
@@ -73,7 +72,7 @@ class PersonProfile:
         return pd.DataFrame(data)
 
 if __name__ == "__main__":
-    profiler = PersonProfile(outputFilename="../Outputs/PersonProfiles-rbd.csv")
+    profiler = PersonProfile(outputFilename="../Outputs/PersonProfiles-2.csv")
     fake_data_df = profiler.generate_fake_profile()
     today = datetime.now()
     print(f"18 years ago = {today.year - 18}/{today.month}/{today.day}")

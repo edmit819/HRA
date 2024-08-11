@@ -1,0 +1,16 @@
+CREATE QUERY determineVaccine(VERTEX<Vaccine> vaccine) {
+/**
+* Build out Vaccine Condition
+**/
+
+  Start = {vaccine};
+  /*
+   * A person is less risky if they have had a COVID Vaccination
+   */
+
+  VRS = SELECT v FROM Start:v WHERE v.vaccine == "Covid"
+  POST-ACCUM
+    v.riskLevel = -1,
+    INSERT INTO hasVaccine VALUES(v.person_id, v.id,"Vaccine");
+
+}

@@ -1,0 +1,29 @@
+CREATE QUERY determineCholesterol(VERTEX<HRA> hra) {
+/**
+* Build out Cholesterol Condition
+**/
+  UINT state;
+  Start = {hra};
+  /*
+   * Lazy instantiate instance of a Cholesterol
+   */
+  DRS = SELECT d FROM Cholesterol:d;
+  IF (DRS.size() == 0) THEN
+      INSERT INTO Cholesterol VALUES(0, "Normal");
+      INSERT INTO Cholesterol VALUES(1, "Borderline High");
+      INSERT INTO Cholesterol VALUES(2, "High");
+  END;
+
+  HRS = SELECT h FROM Start:h 
+  ACCUM
+    CASE
+      WHEN (h.cholesterol < 200) THEN state = 0
+      WHEN (h.cholesterol >= 240) THEN state = 2
+      WHEN (h.cholesterol >= 200 AND h.cholesterol < 240) THEN state = 1
+    END
+
+  POST-ACCUM
+      INSERT INTO hasCholesterol VALUES(h.id,state,"Cholesterol", h.cholesterol);
+
+  PRINT state;
+}

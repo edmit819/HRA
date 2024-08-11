@@ -1,0 +1,4 @@
+CREATE QUERY convertToInches(INT feet, INT inches) RETURNS (INT) {
+# Function to convert height in feet and inches to inches
+  RETURN feet * 12 + inches;
+}

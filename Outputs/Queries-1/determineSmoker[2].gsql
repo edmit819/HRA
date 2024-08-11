@@ -1,0 +1,17 @@
+CREATE QUERY determineSmoker(UINT hraID) {
+/**
+* Build out Smoker Condition
+**/
+  INT id;
+  BOOL smoker;
+  Start = {HRA.*};
+
+  SRS = SELECT s FROM Smoker:s WHERE s.id == hraID;
+    IF SRS.size() == 0 THEN
+      HRS = SELECT h FROM Start:h WHERE h.id == hraID ACCUM id=h.id, smoker=h.smokes
+      POST-ACCUM INSERT INTO Smoker VALUES(id, smoker),
+                 INSERT INTO condition VALUES(id Person, id Smoker,"Smoker");
+  END;
+
+  PRINT "determineSmoker works!";
+}

@@ -1,0 +1,19 @@
+CREATE QUERY initializeMatrix() {
+
+  Start = {HRA.*};
+
+  HRA_Results = SELECT h FROM Start:h
+  ACCUM
+  calculateBodyMass(h.id),
+  determineSmoker(h.id),
+  determineGlucose(h.id),
+  determineAC1(h.id);
+
+  Start = {Vaccine.*};
+
+  VResults = SELECT v FROM Start:v
+  ACCUM determineVaccine(v.person_id);
+
+  PRINT "Completed Initializing Matrix...";
+
+}

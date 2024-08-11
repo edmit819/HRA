@@ -1,0 +1,21 @@
+CREATE QUERY determineSmoker(VERTEX<HRA> hra) {
+/**
+* Build out Smoker Condition
+**/
+  Start = {HRA.*};
+
+  SRS = SELECT s FROM Smoker:s;
+  IF (SRS.size() == 0) THEN
+      INSERT INTO Smoker VALUES(0, FALSE);
+      INSERT INTO Smoker VALUES(1, TRUE);
+  END;
+  
+  HRS = SELECT h FROM Start:h 
+  POST-ACCUM
+      IF (h.smokes) THEN
+        INSERT INTO hasConditionSmoker VALUES(h.id, 1,"Smoker",h.smokes)
+      ELSE
+        INSERT INTO hasConditionSmoker VALUES(h.id, 0,"Smoker", h.smokes)
+      END;
+
+}

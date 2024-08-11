@@ -1,0 +1,17 @@
+CREATE QUERY determineAC1(UINT hraID) {
+/**
+* Build out A1C Condition
+**/
+  INT id;
+  FLOAT a1c;
+  BOOL dibetic = FALSE;
+  Start = {HRA.*};
+
+  HRS = SELECT h FROM Start:h WHERE h.id == hraID ACCUM id=h.id, a1c=h.a1c,
+  IF h.a1c >= 6.50 THEN dibetic=TRUE END
+  POST-ACCUM
+             INSERT INTO A1C VALUES(id, a1c, dibetic),
+             INSERT INTO condition VALUES(id Person, id A1C,"A1C");
+
+  PRINT id,a1c,dibetic;
+}

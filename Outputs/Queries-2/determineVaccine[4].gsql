@@ -1,0 +1,12 @@
+CREATE QUERY determineVaccine(VERTEX<Vaccine> vaccine) {
+/**
+* Build out Vaccine Condition
+**/
+
+  Start = {vaccine};
+
+  VRS = SELECT v FROM Start:v
+  POST-ACCUM
+    INSERT INTO hasConditionVaccine VALUES(v.person_id, v.id,"Vaccine");
+  
+}

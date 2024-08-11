@@ -1,0 +1,17 @@
+CREATE QUERY determineVaccine(UINT person_id) {
+/**
+* Build out Vaccine Condition
+**/
+  INT id;
+  ListAccum<INT> @@listIDs;
+  STRING vaccineName;
+  DATETIME vaccineDate;
+
+  VRS = SELECT v FROM Vaccine:v WHERE v.person_id == person_id
+  ACCUM @@listIDs += v.id
+  POST-ACCUM 
+  FOREACH item IN @@listIDs DO
+    INSERT INTO condition VALUES(person_id Person, item Vaccine,"Vaccine")
+  END;
+  PRINT VRS.size();
+}

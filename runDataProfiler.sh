@@ -1,1 +1,1 @@
-streamlit run app_profile.py
+streamlit run ./src/app_profile.py

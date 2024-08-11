@@ -24,7 +24,7 @@ class ClinicalProfile:
             return False
         
     def generate_fake_profile(self):
-        data = ["id,smokes,glcose,a1c,cholesterol,bloodPressure"]
+        data = []
         count=0
  
         for _ in range(self.num_entries):
@@ -43,7 +43,7 @@ class ClinicalProfile:
         return pd.DataFrame(data)
 
 if __name__ == "__main__":
-    profiler = ClinicalProfile(outputFilename="../Outputs/ClinialProfiles.csv")
+    profiler = ClinicalProfile(outputFilename="Outputs/ClinialProfiles.csv")
     fake_data_df = profiler.generate_fake_profile()
 
 ## Dataframe with Fake Data

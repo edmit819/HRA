@@ -72,7 +72,7 @@ class PersonProfile:
         return pd.DataFrame(data)
 
 if __name__ == "__main__":
-    profiler = PersonProfile(outputFilename="Outputs/PersonProfiles.csv")
+    profiler = PersonProfile(outputFilename="./Outputs/PersonProfiles.csv")
     fake_data_df = profiler.generate_fake_profile()
     today = datetime.now()
     print(f"18 years ago = {today.year - 18}/{today.month}/{today.day}")

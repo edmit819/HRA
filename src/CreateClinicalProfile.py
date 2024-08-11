@@ -43,7 +43,7 @@ class ClinicalProfile:
         return pd.DataFrame(data)
 
 if __name__ == "__main__":
-    profiler = ClinicalProfile(outputFilename="./Outputs/ClinialProfiles.csv")
+    profiler = ClinicalProfile(outputFilename="./Outputs/ClinicalProfiles.csv")
     fake_data_df = profiler.generate_fake_profile()
 
 ## Dataframe with Fake Data

@@ -19,9 +19,9 @@ class ClinicalProfile:
     def calculateSmoking(self) -> bool:
         s = random.randint(1, 10)
         if s > 5:
-            return True
-        else:
             return False
+        else:
+            return True
         
     def generate_fake_profile(self):
         data = []

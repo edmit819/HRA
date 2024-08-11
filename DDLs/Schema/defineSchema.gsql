@@ -1,0 +1,51 @@
+#
+DROP JOB ALL
+DROP GRAPH HRA_Graph
+CREATE GRAPH HRA_Graph(*)
+USE Graph HRA_Graph
+set exit_on_error = "false"
+#
+CREATE SCHEMA_CHANGE JOB HRA_Graph_Schema_Job FOR GRAPH HRA_Graph {
+
+  #color #1180f2 icon: person
+  ADD VERTEX Person (PRIMARY_ID id UINT, firstName STRING, lastName STRING, gender STRING, birthdate DATETIME, age UINT, height UINT, weight UINT) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #04a10f icon: book-1
+  ADD VERTEX HRA (PRIMARY_ID id UINT, smokes BOOL, glucose UINT, a1c float, cholesterol UINT, BloodPressure STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #815aa5 icon: earth globe
+  ADD VERTEX BodyMass (PRIMARY_ID id UINT, riskLevel INT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #f02709 icon: brain
+  ADD VERTEX Dibetic (PRIMARY_ID id UINT, riskLevel INT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #f26006 icon: nuclear planet
+  ADD VERTEX Smoker (PRIMARY_ID id UINT, riskLevel INT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #ee0a44 icon: chemistry
+  ADD VERTEX Cholesterol (PRIMARY_ID id UINT, riskLevel INT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #00950b icon: global war
+  ADD VERTEX BloodPressure (PRIMARY_ID id UINT, riskLevel INT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #ee0a44 icon: radiation
+  ADD VERTEX Risk (PRIMARY_ID id UINT, classification STRING) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+  #color #8105f3 icon: cells
+  ADD VERTEX Vaccine (PRIMARY_ID id UINT, person_id UINT, riskLevel INT, vaccine STRING, lot STRING, date DATETIME) WITH STATS="OUTDEGREE_BY_EDGETYPE", PRIMARY_ID_AS_ATTRIBUTE="true";
+
+#
+# Define conditions
+#
+  ADD UNDIRECTED EDGE hasBodyMass (FROM Person, TO BodyMass, c_type STRING, bmi UINT);
+  ADD UNDIRECTED EDGE hasBloodPressure (FROM Person, TO BloodPressure, c_type STRING, systolic UINT, diastolic UINT);
+  ADD UNDIRECTED EDGE hasDibetic (FROM Person, TO Dibetic, c_type STRING, glucose UINT, a1c FLOAT);
+  ADD UNDIRECTED EDGE hasSmoker (FROM Person, TO Smoker, c_type STRING, smokes BOOL);
+  ADD UNDIRECTED EDGE hasCholesterol (FROM Person, to Cholesterol, c_type STRING, level UINT);
+  ADD UNDIRECTED EDGE hasVaccine (FROM Person, TO Vaccine, c_type STRING);
+  ADD UNDIRECTED EDGE hasHRA (FROM Person, TO HRA, c_type STRING);
+  ADD UNDIRECTED EDGE hasRisk (FROM Person, TO Risk, c_type STRING, riskScore UINT);
+
+}
+RUN SCHEMA_CHANGE JOB HRA_Graph_Schema_Job
+DROP JOB HRA_Graph_Schema_Job

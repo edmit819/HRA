@@ -1,0 +1,40 @@
+CREATE QUERY determineBloodPressure(VERTEX<HRA> hra) {
+/**
+* Build out BloodPressure Condition
+**/
+  UINT state;
+  UINT systolic, diastolic;
+  Start = {hra};
+  /*
+   * Lazy instantiate instance of a Cholesterol
+   */
+  DRS = SELECT d FROM Cholesterol:d;
+  IF (DRS.size() == 0) THEN
+      INSERT INTO BloodPressure VALUES(0, 1, "Low");
+      INSERT INTO BloodPressure VALUES(1, 0, "Normal");
+      INSERT INTO BloodPressure VALUES(2, 1, "Prehypertension");
+      INSERT INTO BloodPressure VALUES(3, 2, "Stage 1 Hypertension");
+      INSERT INTO BloodPressure VALUES(4, 3, "Stage 2 Hypertension");
+      INSERT INTO BloodPressure VALUES(5, 4, "Stage 3 Hypertension");
+  END;
+
+  HRS = SELECT h FROM Start:h
+  ACCUM
+   systolic = str_to_int(left(h.BloodPressure,instr(h.BloodPressure,"/"))),
+   diastolic = str_to_int(substring(h.BloodPressure,(instr(h.BloodPressure,"/"))+1,length(h.BloodPressure)))
+  POST-ACCUM
+  UINT bpstage=0,
+  
+  CASE
+      WHEN (systolic < 90) THEN bpstage = 0
+      WHEN (systolic >= 90 AND systolic < 121) THEN bpstage = 1
+      WHEN (systolic > 120 AND systolic < 131) THEN bpstage = 2
+      WHEN (systolic > 130 AND systolic < 141) THEN bpstage = 3
+      WHEN (systolic > 140 AND systolic < 180) THEN bpstage = 4
+      WHEN (systolic >= 180) THEN bpstage = 5
+    END,
+    
+    INSERT INTO hasBloodPressure VALUES(h.id,bpstage,"BloodPressure", systolic, diastolic);
+
+  PRINT systolic, diastolic, state;
+}

@@ -1,0 +1,50 @@
+CREATE QUERY determineRisk() {
+   /*
+    * Determine a Person's Risk
+    */
+
+  SumAccum<INT> @risks=0;
+  /*
+   * Lazy instantiate instance of a Risk
+   */
+  RRS = SELECT d FROM Risk:d;
+  IF (RRS.size() == 0) THEN
+      INSERT INTO Risk VALUES(0,"No Risk");
+      INSERT INTO Risk VALUES(1,"Low Risk");
+      INSERT INTO Risk VALUES(2,"Medium Risk");
+      INSERT INTO Risk VALUES(3,"High Risk");
+  END;
+
+  Start = {Person.*};
+
+  /*
+   * Remove any hasRisk Edges First
+   */
+  RRS = SELECT p FROM Start:p - (hasRisk:re) - :t
+  ACCUM Delete(re);
+
+  /*
+   * Recalculate the New Risks
+   */
+  PRS = SELECT p FROM Start:p - (hasBodyMass | hasDibetic | hasSmoker | hasCholesterol | hasVaccine) - :t
+  ACCUM
+        p.@risks += t.riskLevel
+  POST-ACCUM
+        CASE
+          WHEN (p.age >= 60 AND p.age < 80) THEN p.@risks += 1
+          WHEN (p.age >= 80) THEN p.@risks += 2
+        END,
+
+        IF (p.@risks <= 0) THEN
+           INSERT INTO hasRisk VALUES(p.id,0,"No Risk", p.@risks)
+        ELSE IF (p.@risks > 0 AND p.@risks < 3) THEN
+           INSERT INTO hasRisk VALUES(p.id,1,"Low Risk", p.@risks)
+        ELSE IF (p.@risks > 2 AND p.@risks < 5) THEN
+           INSERT INTO hasRisk VALUES(p.id,2,"Medium Risk", p.@risks)
+        ELSE IF (p.@risks > 4) THEN
+           INSERT INTO hasRisk VALUES(p.id,3,"High Risk", p.@risks)
+        END;
+
+
+  Print PRS;
+}

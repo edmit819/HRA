@@ -6,11 +6,11 @@ DROP JOB HRA_Graph_Vertex_Job
 CREATE LOADING JOB  HRA_Graph_Vertex_Job FOR GRAPH  HRA_Graph {
 DEFINE FILENAME DS0 = "./GraphData/PersonProfiles.csv";
 #DEFINE FILENAME DS1 = "./GraphData/BodyMass-Index.csv";
-DEFINE FILENAME DS2 = "./GraphData/healthRiskAssessment.csv";
+DEFINE FILENAME DS2 = "./GraphData/ClinicalProfiles.csv";
 DEFINE FILENAME DS3 = "./GraphData/Vaccines.csv";
 
   LOAD DS0 TO VERTEX Person VALUES($0,$1,$2,$3,$4,$5,$6,$7) USING SEPARATOR=",", HEADER="true", QUOTE="double", EOL="\n";
-  LOAD DS2 TO VERTEX HRA VALUES($0,$3,$4,$5,$6,$7) USING SEPARATOR=",", HEADER="true", QUOTE="double", EOL="\n";
+  LOAD DS2 TO VERTEX HRA VALUES($0,$1,$2,$3,$4,$5) USING SEPARATOR=",", HEADER="true", QUOTE="double", EOL="\n";
   LOAD DS3 TO VERTEX Vaccine VALUES($0,$1,_,$2,$3,$4) USING SEPARATOR=",", HEADER="true", QUOTE="double", EOL="\n";
 
 }

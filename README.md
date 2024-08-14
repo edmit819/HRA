@@ -31,9 +31,9 @@ The data to load into the database is defined in the GraphData directory. The sr
 
 >GraphData/
  >>>BodyMass-Index.csv  
- ClinicalProfiles.csv
- PersonProfiles.csv
- Vaccines.csv
+ ClinicalProfiles.csv  
+ PersonProfiles.csv  
+ Vaccines.csv  
 
 >src/  
 >>>CreateClinicalProfile.py  

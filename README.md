@@ -1,4 +1,4 @@
-                                        ##Welcome to HRA Repository
+                                          Welcome to HRA Repository
 
 
 HRA is a repository that defines TigerGraph Graph database schema for capturing a user Health Risk Assessments.

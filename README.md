@@ -1,5 +1,7 @@
 #  <p align="center">Welcome to HRA Repository</p>
 
+<img width="1028" alt="image" src="https://github.com/user-attachments/assets/e2ad3209-271e-4e18-9128-a6ae71b6c2ea">
+
 
 HRA is a repository that defines TigerGraph Graph database schema for capturing a user Health Risk Assessments.
 

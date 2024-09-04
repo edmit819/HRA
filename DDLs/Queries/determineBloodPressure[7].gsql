@@ -6,9 +6,9 @@ CREATE QUERY determineBloodPressure(VERTEX<HRA> hra) {
   UINT systolic, diastolic;
   Start = {hra};
   /*
-   * Lazy instantiate instance of a Cholesterol
+   * Lazy instantiate instance of a BloodPressure
    */
-  DRS = SELECT d FROM Cholesterol:d;
+  DRS = SELECT d FROM BloodPressure:d;
   IF (DRS.size() == 0) THEN
       INSERT INTO BloodPressure VALUES(0, 1, "Low");
       INSERT INTO BloodPressure VALUES(1, 0, "Normal");

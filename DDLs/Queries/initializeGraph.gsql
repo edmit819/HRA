@@ -16,6 +16,7 @@ CREATE QUERY initializeGraph() {
     determineSmoker(hra);
     determineDibetic(hra);
     determineCholesterol(hra);
+    determineBloodPressure(hra);
   END;
 
   Start = {Vaccine.*};

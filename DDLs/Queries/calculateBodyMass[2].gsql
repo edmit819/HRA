@@ -37,7 +37,7 @@ CREATE QUERY calculateBodyMass(VERTEX<HRA> hra) {
   Start = {hra};
   PersonInt = {Person.*};
 
-  pResult = SELECT h FROM Start:h - (hasHRA:e) - :p WHERE p.id == hra.id
+  Result = SELECT h FROM Start:h - (hasHRA:e) - :p WHERE p.id == h.id
   ACCUM bmi = round((p.weight * 703)/square(p.height)),
         id = hra.id, height = p.height, weight=p.weight
   POST-ACCUM
